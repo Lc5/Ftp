@@ -1,7 +1,8 @@
 {
     "name": "Lc5/Ftp",
-    "description": "A simple object wrapper around PHP ftp_* functions.",
+    "description": "A simple object wrapper around native ftp_* functions.",
     "keywords": ["ftp"],
+    "homepage": "https://github.com/Lc5/Ftp",
     "license": "MIT",
     "authors": [
         {
@@ -9,6 +10,9 @@
             "email": "lukasz.krzyszczak@gmail.com"
         }
     ],
+    "require": {
+        "php": ">=5.4.0"
+    },
     "require-dev": {
         "phpunit/phpunit": "4.3.*"
     },

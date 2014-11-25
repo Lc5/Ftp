@@ -1,7 +1,7 @@
 Ftp
 ===
 
-A simple object wrapper around PHP ftp_* functions. Fully unit-tested.
+A simple object wrapper around native ftp_* functions. Fully unit-tested.
 
 Example usage:
 
@@ -9,13 +9,22 @@ Example usage:
 use Lc5\Ftp;
 
 $ftp = new Ftp('ftp.example.com', 'username', 'password');
+
+//Save remote.txt to local.txt
 $ftp->get('local.txt', 'remote.txt', FTP_ASCII);
+
+//Actually you don't have to explicitly call close()
+//It will get called automatically as a part of the __destruct() method
 $ftp->close();
-```
-You don't have to call close() method if you don't want to. It will get called automatically as a part of the __destruct() method.
 
-For anonymous login just call:
-
-```php
+//For anonymous login you only need to pass the host address
 $ftp = new Ftp('ftp.example.com');
+$ftp->pasv(true);
+
+//Get list of files in current directory and print them
+$files = $ftp->rawlist('.');
+
+foreach ($files as $file) {
+    echo $file . PHP_EOL;
+}
 ```

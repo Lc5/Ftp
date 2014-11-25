@@ -86,7 +86,7 @@ class FtpTest extends \PHPUnit_Framework_TestCase
     }
 }
 
-//We have to mock some internal PHP functions
+//Mock some internal PHP functions
 
 /**
  * Returns an array of arguments with which was called.
