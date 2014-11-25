@@ -1,5 +1,5 @@
 {
-    "name": "Lc5/Ftp",
+    "name": "lc5/ftp",
     "description": "A simple object wrapper around native ftp_* functions.",
     "keywords": ["ftp"],
     "homepage": "https://github.com/Lc5/Ftp",
