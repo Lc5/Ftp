@@ -1,4 +1,4 @@
-Ftp
+Ftp [![Build Status](https://travis-ci.org/Lc5/Ftp.svg?branch=master)](https://travis-ci.org/Lc5/Ftp)
 ===
 
 A simple object wrapper around native ftp_* functions. Fully unit-tested.
