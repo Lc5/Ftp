@@ -7,32 +7,36 @@ namespace Lc5;
  *
  * A simple object wrapper around native ftp_* functions. Fully unit-tested.
  *
- * Example usage:
- *
- *  <code>
- *  use Lc5\Ftp;
- *
- *  $ftp = new Ftp('ftp.example.com', 'username', 'password');
- *
- *  //Save remote.txt to local.txt
- *  $ftp->get('local.txt', 'remote.txt', FTP_ASCII);
- *
- *  //Actually you don't have to explicitly call close()
- *  //It will get called automatically as a part of the __destruct() method
- *  $ftp->close();
- *
- *  //For anonymous login you only need to pass the host address
- *  $ftp = new Ftp('ftp.example.com');
- *  $ftp->pasv(true);
- *
- *  //Get list of files in current directory and print them
- *  $files = $ftp->rawlist('.');
- *
- *  foreach ($files as $file) {
- *      echo $file . PHP_EOL;
- *  }
- *  </code>
- *
+ * @method bool alloc(int $filesize, string &$result = null) — Allocates space for a file to be uploaded
+ * @method bool cdup() — Changes to the parent directory
+ * @method bool chdir(string $directory) — Changes the current directory on a FTP server
+ * @method int chmod(int $mode, string $filename) — Set permissions on a file via FTP
+ * @method bool delete(string $path) — Deletes a file on the FTP server
+ * @method bool exec(string $command) — Requests execution of a command on the FTP server
+ * @method bool fget(resource $handle, string $remote_file, int $mode, int $resumepos = 0) — Downloads a file from the FTP server and saves to an open file
+ * @method bool fput(string $remote_file, resource $handle, int $mode, int $startpos = 0) — Uploads from an open file to the FTP server
+ * @method mixed get_option(int $option) — Retrieves various runtime behaviours of the current FTP stream
+ * @method bool get(string $local_file, string $remote_file, int $mode, int $resumepos = 0) — Downloads a file from the FTP server
+ * @method int mdtm(string $remote_file) — Returns the last modified time of the given file
+ * @method string mkdir(string $directory) — Creates a directory
+ * @method int nb_continue() — Continues retrieving/sending a file (non-blocking)
+ * @method int nb_fget(resource $handle, string $remote_file, int $mode, int $resumepos = 0) — Retrieves a file from the FTP server and writes it to an open file (non-blocking)
+ * @method int nb_fput(string $remote_file, resource $handle, int $mode, int $startpos = 0) — Stores a file from an open file to the FTP server (non-blocking)
+ * @method int nb_get(string $local_file, string $remote_file, int $mode, int $resumepos = 0) — Retrieves a file from the FTP server and writes it to a local file (non-blocking)
+ * @method int nb_put(string $remote_file, string $local_file, int $mode, int $startpos = 0) — Stores a file on the FTP server (non-blocking)
+ * @method array nlist(string $directory) — Returns a list of files in the given directory
+ * @method bool pasv(bool $pasv) — Turns passive mode on or off
+ * @method bool put(string $remote_file, string $local_file, int $mode, int $startpos = 0) — Uploads a file to the FTP server
+ * @method string pwd() — Returns the current directory name
+ * @method array raw(string $command) — Sends an arbitrary command to an FTP server
+ * @method mixed rawlist(string $directory, bool $recursive = false) — Returns a detailed list of files in the given directory
+ * @method bool rename(string $oldname, string $newname) — Renames a file or a directory on the FTP server
+ * @method bool rmdir(string $directory) — Removes a directory
+ * @method bool set_option(int $option, mixed $value) — Set miscellaneous runtime FTP options
+ * @method bool site(string $command) — Sends a SITE command to the server
+ * @method int size(string $remote_file) — Returns the size of the given file
+ * @method string systype() — Returns the system type identifier of the remote FTP server
+ * 
  * @author Łukasz Krzyszczak <lukasz.krzyszczak@gmail.com>
  */
 class Ftp
@@ -55,6 +59,9 @@ class Ftp
     /** @var int */
     private $timeout;
 
+    /** @var bool */
+    private $ssl;
+
     /**
      * Sets FTP connection params.
      *
@@ -63,14 +70,21 @@ class Ftp
      * @param string $password
      * @param int $port
      * @param int $timeout
+     * @param bool $ssl
+     * @throws \RuntimeException
      */
-    public function __construct($host, $username = 'anonymous', $password = '', $port = 21, $timeout = 90)
+    public function __construct($host, $username = 'anonymous', $password = '', $port = 21, $timeout = 90, $ssl = false)
     {
-        $this->host     = $host;
+        if (!extension_loaded('ftp')) {
+            throw new \RuntimeException('FTP extension is not loaded!');
+        }
+
+        $this->host = $host;
         $this->username = $username;
         $this->password = $password;
-        $this->port     = $port;
-        $this->timeout  = $timeout;
+        $this->port = $port;
+        $this->timeout = $timeout;
+        $this->ssl = $ssl;
     }
 
     /**
@@ -81,9 +95,15 @@ class Ftp
      */
     public function connect()
     {
-        if ($this->connection === null) {
+        if (!$this->connection) {
 
-            if (!$connection = ftp_connect($this->host, $this->port, $this->timeout)) {
+            if ($this->ssl) {
+                $connection = ftp_ssl_connect($this->host, $this->port, $this->timeout);
+            } else {
+                $connection = ftp_connect($this->host, $this->port, $this->timeout);
+            }
+
+            if (!$connection) {
                 throw new \RuntimeException("FTP connection to '" . $this->host . ":" . $this->port . "' has failed!");
             }
 

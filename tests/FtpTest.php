@@ -22,6 +22,12 @@ class FtpTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($this->ftp->connect());
     }
 
+    public function testFtpConnectsUsingSsl()
+    {
+        $ftp =  new Ftp('ftp-ssl.example.com', 'username', 'password', 21, null, true);
+        $this->assertTrue($ftp->connect());
+    }
+
     public function testFtpGetsFile()
     {
         $result = $this->ftp->get('local.txt', 'remote.txt', FTP_ASCII);
@@ -113,8 +119,22 @@ function call_user_func_array(callable $callback , array $params)
  */
 function ftp_connect($host, $port = 21, $timeout = 90)
 {
-    return $host == 'ftp.example.com' &&
-           $port == '21';
+    return $host === 'ftp.example.com' &&
+           $port === 21;
+}
+
+/**
+ * Mocks FTP ssl connection.
+ *
+ * @param string $host
+ * @param int $port
+ * @param int $timeout
+ * @return bool
+ */
+function ftp_ssl_connect($host, $port = 21, $timeout = 90)
+{
+    return $host === 'ftp-ssl.example.com' &&
+           $port === 21;
 }
 
 /**
@@ -128,8 +148,8 @@ function ftp_connect($host, $port = 21, $timeout = 90)
 function ftp_login($connection, $username, $password)
 {
     return $connection &&
-           $username == 'username' &&
-           $password == 'password';
+           $username === 'username' &&
+           $password === 'password';
 }
 
 /**
@@ -142,3 +162,4 @@ function ftp_close($connection)
 {
     return true;
 }
+
