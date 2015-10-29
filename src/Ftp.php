@@ -79,13 +79,13 @@ class Ftp
             throw new \RuntimeException('FTP extension is not loaded!');
         }
 
-        $this->host = $host;
+        $this->host     = $host;
         $this->username = $username;
         $this->password = $password;
-        $this->port = $port;
-        $this->timeout = $timeout;
-        $this->ssl = $ssl;
-    }
+        $this->port     = $port;
+        $this->timeout  = $timeout;
+        $this->ssl      = $ssl;
+}
 
     /**
      * Connects and logs in to FTP server.
