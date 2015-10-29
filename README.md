@@ -42,3 +42,5 @@ try {
     echo $e->getMessage();
 }
 ```
+
+[Composer]: https://getcomposer.org/
