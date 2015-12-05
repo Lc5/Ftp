@@ -1,6 +1,6 @@
 <?php
 
-namespace Lc5;
+namespace Lc5\Ftp;
 
 /**
  * Class Ftp
@@ -133,7 +133,7 @@ class Ftp
      * @return mixed
      * @throws \BadMethodCallException
      */
-    public function __call($name, $arguments)
+    public function __call($name, array $arguments)
     {
         $functionName = 'ftp_' . $name;
 

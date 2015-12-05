@@ -14,10 +14,10 @@
         "php": ">=5.4.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "4.3.*"
+        "phpunit/phpunit": "4.8.*"
     },
     "autoload": {
-        "files": ["src/Ftp.php"]
+        "files": ["src/Ftp/Ftp.php"]
     }
 }
 
