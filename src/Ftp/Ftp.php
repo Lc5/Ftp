@@ -41,6 +41,7 @@ namespace Lc5\Ftp;
  */
 class Ftp
 {
+
     /** @var resource */
     private $connection;
 
@@ -85,7 +86,7 @@ class Ftp
         $this->port     = $port;
         $this->timeout  = $timeout;
         $this->ssl      = $ssl;
-}
+    }
 
     /**
      * Connects and logs in to FTP server.

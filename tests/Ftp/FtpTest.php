@@ -9,6 +9,7 @@ namespace Lc5\Ftp;
  */
 class FtpTest extends \PHPUnit_Framework_TestCase
 {
+
     /** @var Ftp */
     private $ftp;
 
