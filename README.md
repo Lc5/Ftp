@@ -43,4 +43,22 @@ try {
 }
 ```
 
+Extending
+---------
+
+```php
+use Lc5\Ftp;
+
+class MyFtp extends Ftp
+{
+    public function myFunction()
+    {
+        $connection = $this->connect();
+        
+        //your custom code...
+    }
+}
+
+```
+
 [Composer]: https://getcomposer.org/
