@@ -16,7 +16,7 @@ Usage
 -----
 
 ```php
-use Lc5\Ftp;
+use Lc5\Ftp\Ftp;
 
 try {
     $ftp = new Ftp('ftp.example.com', 'username', 'password');
@@ -47,7 +47,7 @@ Extending
 ---------
 
 ```php
-use Lc5\Ftp;
+use Lc5\Ftp\Ftp;
 
 class MyFtp extends Ftp
 {
